@@ -1,0 +1,42 @@
+body{
+background:#0f172a;
+color:white;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+.hero{
+padding:120px 0;
+text-align:center;
+}
+
+.hero h1{
+font-size:48px;
+font-weight:700;
+}
+
+.hero p{
+color:#cbd5e1;
+}
+
+.features{
+padding:80px 0;
+}
+
+.feature-box{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+text-align:center;
+transition:0.3s;
+}
+
+.feature-box:hover{
+transform:translateY(-8px);
+}
+
+.footer{
+background:#020617;
+padding:30px;
+margin-top:80px;
+color:#94a3b8;
+}

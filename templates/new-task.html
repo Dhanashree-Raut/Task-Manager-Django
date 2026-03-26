@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Add Task
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Add New Task</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form method="POST" action="newtask">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label">Task Title</label>
+            <input type="text" class="form-control" name="title" placeholder="Enter task title" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" rows="3"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Due Date</label>
+            <input type="date" class="form-control" name="due_date" />
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">Add Task</button>
+        </form>
+
+        {% if success %}
+          <!-- Modal -->
+          <div class="modal fade" id="modalAlertTaskAdded" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content text-center p-4">
+                <!-- Icon -->
+                <div class="mb-3">
+                  <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">✓</div>
+                </div>
+
+                <!-- Title -->
+                <h4 class="text-success">Task Added!</h4>
+
+                <!-- Message -->
+                <p class="text-muted mb-4">Your task has been added successfully to the list.</p>
+
+                <!-- Button -->
+                <div>
+                  <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>
+{% endblock %}
