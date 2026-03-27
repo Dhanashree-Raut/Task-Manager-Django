@@ -53,17 +53,122 @@ def logout_view(request):
     logout(request)   # 🔥 clears session
     return redirect('login')  # or 'home'
 
-#  Task Related Functions
+#  Task Related Functions -----------------------------------------------------
 
 def home(request):
-    # return HttpResponse("Hello, world. You're at the hoem/user index.")
-    # return HttpResponse("<h1>Hello Home</h1")
-    context = {
-        "name" : "Dhanashree",
-        "course" : "Django",
+    
+    slider_data = [
+    {
+        "title": "Manage Tasks Without Stress",
+        "desc": "Plan, organize, and track your daily tasks effortlessly with a clean and powerful interface.",
+        "img": "https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?q=80&w=1600",
+        "btn_text": "Get Started"
+    },
+    {
+        "title": "Never Miss a Deadline",
+        "desc": "Stay on top of your work with due dates, reminders, and real-time progress tracking.",
+        "img": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1600",
+        "btn_text": "Explore Features"
+    },
+    {
+        "title": "Work Better Together",
+        "desc": "Collaborate with your team, share tasks, and communicate seamlessly in one place.",
+        "img": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1600",
+        "btn_text": "Start Collaborating"
     }
-    return render(request,'index.html' , context)
-
+]
+    
+    features = [
+        {
+            "title": "Task Management",
+            "img": "https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?q=80&w=1000",
+            "desc": "Easily create, organize, and manage all your daily tasks in one place.",
+            "points": [
+                "Quickly add tasks with minimal effort",
+                "Add detailed descriptions for better clarity",
+                "Set due dates to stay on schedule",
+                "Edit and update tasks anytime",
+                "Organize tasks based on priority",
+                "Keep everything structured and easy to find"
+            ]
+        },
+        {
+            "title": "Delete & Recycle",
+            "img": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1000",
+            "desc": "A safe and reliable system to manage deleted tasks without losing important data.",
+            "points": [
+                "Delete tasks safely without permanent loss",
+                "Move deleted tasks to recycle bin",
+                "Restore tasks anytime when needed",
+                "Permanently delete unwanted tasks",
+                "Prevent accidental data loss",
+                "Keep your workspace clean and organized"
+            ]
+        },
+        {
+            "title": "Task Status Tracking",
+            "img": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000",
+            "desc": "Track the progress of your tasks and stay productive every day.",
+            "points": [
+                "Mark tasks as complete when finished",
+                "Reopen tasks by marking them incomplete",
+                "Track progress visually and clearly",
+                "Focus on pending and important tasks",
+                "Monitor daily productivity easily",
+                "Stay consistent with your workflow"
+            ]
+        }
+    ]
+    
+    upcoming_features = [
+        {
+            "title": "Task Sharing",
+            "img": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1000",
+            "desc": "Easily share tasks with others and collaborate in real-time.",
+            "points": [
+                "Share tasks with friends or teammates",
+                "Assign responsibilities to specific users",
+                "Collaborate on shared tasks efficiently",
+                "Get real-time updates on changes",
+                "Control access and permissions",
+                "Improve team coordination effortlessly"
+            ]
+        },
+        {
+            "title": "Team Collaboration",
+            "img": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1000",
+            "desc": "Work together in teams and manage projects more efficiently.",
+            "points": [
+                "Create teams for projects or departments",
+                "Assign tasks to team members easily",
+                "Track team progress in one dashboard",
+                "Distribute workload efficiently",
+                "Collaborate on shared goals",
+                "Improve productivity with teamwork"
+            ]
+        },
+        {
+            "title": "Team Comments & Chat",
+            "img": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1000",
+            "desc": "Communicate directly within tasks and keep conversations organized.",
+            "points": [
+                "Add detailed comments on each task",
+                "Have real-time team discussions",
+                "Tag team members for quick updates",
+                "Maintain conversation history",
+                "Share important notes and feedback",
+                "Improve communication within teams"
+            ]
+        }
+    ]
+    
+    return render(request, 'index.html', {
+        'slider_data': slider_data,
+        'features': features,
+        'upcoming_features': upcoming_features
+    })
+    
+    
 @login_required
 def addTask(request):
     context = {'success': False}
@@ -77,7 +182,7 @@ def addTask(request):
         
         context = {'success': True}
 
-        task = Task(title=title , desc = description , duedate = duedate )
+        task = Task( author=request.user,  title=title , desc = description , duedate = duedate )
         # print(task)    
         task.save()
     
@@ -87,8 +192,15 @@ def addTask(request):
 def listTask(request):
     # get all the task and show
     # allTask = Task.objects.all()
-    allTask = Task.objects.filter(is_trash=False)
-    trashTask = Task.objects.filter(is_trash=True)
+    
+    # --- Without user 
+    # allTask = Task.objects.filter(is_trash=False)
+    # trashTask = Task.objects.filter(is_trash=True)
+    
+    # With user filter 
+    allTask = Task.objects.filter(author=request.user, is_trash=False)
+    trashTask = Task.objects.filter(author=request.user, is_trash=True)
+
     context = {'tasks' : allTask , 
                'trash_tasks':trashTask,  } 
     # context = {'tasks' : False} 
@@ -98,7 +210,7 @@ def listTask(request):
 
 @login_required
 def edit_task(request, id):
-    task = get_object_or_404(Task, id=id)
+    task = get_object_or_404(Task, id=id, author=request.user)
 
     if request.method == "POST":
         task.title = request.POST.get('title')
@@ -111,7 +223,7 @@ def edit_task(request, id):
 
 @login_required
 def delete_task(request, id):
-    task = get_object_or_404(Task, id=id)
+    task = get_object_or_404(Task, id=id, author=request.user)
     # task.delete()
     task.is_trash = True
     task.save()
@@ -119,17 +231,23 @@ def delete_task(request, id):
 
 @login_required
 def restore_task(request, id):
-    task = get_object_or_404(Task, id=id)
+    task = get_object_or_404(Task, id=id, author=request.user)
     # task.delete()
     task.is_trash = False
     task.save()
     return redirect('task_list')
 
-
 @login_required
 def complete_task(request, id):
-    task = get_object_or_404(Task, id=id)
+    task = get_object_or_404(Task, id=id, author=request.user)
     task.is_complete = True
+    task.save()
+    return redirect('task_list')
+
+@login_required
+def remove_complete_task(request, id):
+    task = get_object_or_404(Task, id=id, author=request.user)
+    task.is_complete = False
     task.save()
     return redirect('task_list')
 

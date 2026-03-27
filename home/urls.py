@@ -15,6 +15,7 @@ urlpatterns = [
     path('delete/<int:id>/', views.delete_task, name='delete_task'),
     path('restore/<int:id>/', views.restore_task, name='restore_task'),
     path('complete/<int:id>/', views.complete_task, name='complete_task'),
+    path('incomplete/<int:id>/', views.remove_complete_task, name='remove_complete_task'),
     
     # Login and signupp
     path('signup/', views.signup, name='signup'),
