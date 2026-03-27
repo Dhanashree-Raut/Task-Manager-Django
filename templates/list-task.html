@@ -13,7 +13,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Entry ID</th>
+            {% comment %} <th>Entry ID</th> {% endcomment %}
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
@@ -25,7 +25,7 @@
           {% for task in tasks %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td>TASK-{{ task.id }}</td>
+              {% comment %} <td>TASK-{{ task.id }}</td> {% endcomment %}
               <td class="sticky-col sticky-col-3">
                 {{ task.title|slice:':20' }}{% if task.title|length > 20 %}...{% endif %}
               </td>
@@ -160,7 +160,7 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Entry ID</th>
+            {% comment %} <th>Entry ID</th> {% endcomment %}
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
@@ -172,7 +172,7 @@
           {% for task in trash_tasks %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td>TASK-{{ task.id }}</td>
+              {% comment %} <td>TASK-{{ task.id }}</td> {% endcomment %}
               <td class="sticky-col sticky-col-3">
                 {{ task.title|slice:':20' }}{% if task.title|length > 20 %}...{% endif %}
               </td>
