@@ -40,7 +40,7 @@
                 <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                 {% if task.is_complete %}
                   <!-- Show CROSS button (Remove Complete) -->
-                  <a href="{% url 'remove_complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#removeCompleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                  <a href="{% url 'remove_complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#incompleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
                 {% else %}
                   <!-- Show CHECK button (Complete Task) -->
                   <a href="{% url 'complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#completeModal{{ task.id }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>
@@ -126,6 +126,26 @@
                 </div>
               </div>
             </div>
+
+            {% comment %}Mark Cmplete Model{% endcomment %}
+            <div class="modal fade" id="incompleteModal{{ task.id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title text-dark">Mark as Incomplete?</h5>
+                  </div>
+
+                  <div class="modal-body text-dark">Mark this task as Incomplete?</div>
+
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <a href="{% url 'remove_complete_task' task.id %}" class="btn btn-success">Yes, Mark Incomplete</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           {% endfor %}
         </tbody>
       </table>
