@@ -36,14 +36,14 @@
 
               {% comment %}Adding Action Buttons For Task{% endcomment %}
               <td>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ task.id }}"><i class="fa fa-eye"></i></button>
-                <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                <button class="btn btn-warning btn-sm m-2" data-bs-toggle="modal" data-bs-target="#editModal{{ task.id }}"><i class="fa fa-eye"></i></button>
+                <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}" class="btn btn-danger btn-sm m-2"><i class="fa fa-trash"></i></a>
                 {% if task.is_complete %}
                   <!-- Show CROSS button (Remove Complete) -->
-                  <a href="{% url 'remove_complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#incompleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                  <a href="{% url 'remove_complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#incompleteModal{{ task.id }}" class="btn btn-danger btn-sm m-2"><i class="fa fa-times"></i></a>
                 {% else %}
                   <!-- Show CHECK button (Complete Task) -->
-                  <a href="{% url 'complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#completeModal{{ task.id }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>
+                  <a href="{% url 'complete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#completeModal{{ task.id }}" class="btn btn-success btn-sm m-2"><i class="fa fa-check"></i></a>
                 {% endif %}
               </td>
             </tr>
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="modal-footer">
-                      <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                      <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}" class="btn btn-danger btn-sm m-2"><i class="fa fa-trash"></i></a>
 
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
@@ -183,8 +183,8 @@
 
               {% comment %}Adding Action Buttons For Task{% endcomment %}
               <td>
-                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal{{ task.id }}"><i class="fa fa-eye"></i></button>
-                <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#restoreModal{{ task.id }}" class="btn btn-danger btn-sm"><i class="fa fa-recycle"></i></a>
+                <button class="btn btn-warning btn-sm m-2" data-bs-toggle="modal" data-bs-target="#viewModal{{ task.id }}"><i class="fa fa-eye"></i></button>
+                <a href="{% url 'delete_task' task.id %}" data-bs-toggle="modal" data-bs-target="#restoreModal{{ task.id }}" class="btn btn-danger btn-sm m-2"><i class="fa fa-recycle"></i></a>
               </td>
             </tr>
 
