@@ -18,7 +18,7 @@ urlpatterns = [
     path('incomplete/<int:id>/', views.remove_complete_task, name='remove_complete_task'),
     
     # Login and signupp
-    path('signup/', views.signup, name='signup'),
+    path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     # path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login')

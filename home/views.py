@@ -5,35 +5,26 @@ from home.models import Task
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login , logout
 from django.contrib.auth.models import User
+from .forms import SignUpForm
 
 
 # User - Login and Sign Up 
-def signup(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        print(form.is_valid())
 
-        # 🔐 validations
-        if password != confirm_password:
-            return render(request, 'signup.html', {'error': 'Passwords do not match'})
-
-        if User.objects.filter(username=username).exists():
-            return render(request, 'signup.html', {'error': 'Username already exists'})
-
-        # ✅ create user
-        user = User.objects.create_user(
-            username=username,
-            password=password
-        )
-
-        # 🔥 auto login after signup
-        login(request, user)
-
-        return redirect('task_list')
-
-    return render(request, 'signup.html')
-
+        if form.is_valid():
+            user = form.save()
+            login(request, user)          # auto-login after signup
+            return redirect('home')       # change 'home' to your home URL name
+        else:
+            print(form.errors) 
+    else:
+        form = SignUpForm()
+        
+    return render(request, 'signup.html', {'form': form})
+ 
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get('username')

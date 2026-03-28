@@ -1,47 +1,185 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Signup{% endblock %}
+{% block title %}
+  Sign Up
+{% endblock %}
 
 {% block content %}
+  {% block extra_css %}
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="{% static 'css/signup.css' %}" rel="stylesheet" />
+  {% endblock %}
 
-<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
-    
-    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
-        
-        <h3 class="text-center mb-4">📝 Create Account</h3>
+  <div class="container d-flex justify-content-center " style="height: 100%;">
+    <div class="wrapper mt-3">
 
-        {% if error %}
-            <div class="alert alert-danger">{{ error }}</div>
+      <div class="card">
+        {% if form.non_field_errors %}
+          <ul class="global-errors">
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
         {% endif %}
 
-        <form method="POST">
-            {% csrf_token %}
+        <form method="POST" novalidate>
+          {% csrf_token %}
 
-            <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Choose username" required>
+          <!-- First Name + Last Name -->
+          <div class="row">
+            <div class="field">
+              <label for="{{ form.first_name.id_for_label }}">First Name</label>
+              <div class="input-wrap">
+                <input type="text" name="first_name" id="{{ form.first_name.id_for_label }}" class="form-input no-eye {% if form.first_name.errors %}has-error{% endif %}" placeholder="First Name" value="{{ form.first_name.value|default:'' }}" />
+                <svg class="icon-left" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              {% if form.first_name.errors %}
+                <ul class="field-errors">
+                  {% for e in form.first_name.errors %}
+                    <li>{{ e }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Create password" required>
+            <div class="field">
+              <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+              <div class="input-wrap">
+                <input type="text" name="last_name" id="{{ form.last_name.id_for_label }}" class="form-input no-eye {% if form.last_name.errors %}has-error{% endif %}" placeholder="Last Name" value="{{ form.last_name.value|default:'' }}" />
+                <svg class="icon-left" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </div>
+              {% if form.last_name.errors %}
+                <ul class="field-errors">
+                  {% for e in form.last_name.errors %}
+                    <li>{{ e }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
             </div>
+          </div>
 
-            <div class="mb-3">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm password" required>
+          <!-- Email -->
+          <div class="field">
+            <label for="{{ form.email.id_for_label }}">Email Address</label>
+            <div class="input-wrap">
+              <input type="email" name="email" id="{{ form.email.id_for_label }}" class="form-input no-eye {% if form.email.errors %}has-error{% endif %}" placeholder="you@example.com" value="{{ form.email.value|default:'' }}" />
+              <svg class="icon-left" viewBox="0 0 24 24">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
             </div>
+            {% if form.email.errors %}
+              <ul class="field-errors">
+                {% for e in form.email.errors %}
+                  <li>{{ e }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
 
-            <button class="btn btn-success w-100">Signup</button>
+          <div class="divider">Account Details</div>
+
+          <!-- Username -->
+          <div class="field">
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            <div class="input-wrap">
+              <input type="text" name="username" id="{{ form.username.id_for_label }}" class="form-input no-eye {% if form.username.errors %}has-error{% endif %}" placeholder="Choose a username" value="{{ form.username.value|default:'' }}" />
+              <svg class="icon-left" viewBox="0 0 24 24">
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+            </div>
+            {% if form.username.errors %}
+              <ul class="field-errors">
+                {% for e in form.username.errors %}
+                  <li>{{ e }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="field">
+            <label for="{{ form.password1.id_for_label }}">Password</label>
+            <div class="input-wrap">
+              <input type="password" name="password1" id="{{ form.password1.id_for_label }}" class="form-input {% if form.password1.errors %}has-error{% endif %}" placeholder="Create a strong password" />
+              <svg class="icon-left" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0110 0v4" />
+              </svg>
+              <button type="button" class="eye-btn" data-target="{{ form.password1.id_for_label }}">
+                <!-- Eye icon (show) -->
+                <svg class="eye-show" viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <!-- Eye-off icon (hide) — hidden by default -->
+                <svg class="eye-hide" viewBox="0 0 24 24" style="display:none">
+                  <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+                  <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+            {% if form.password1.errors %}
+              <ul class="field-errors">
+                {% for e in form.password1.errors %}
+                  <li>{{ e }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="field">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+            <div class="input-wrap">
+              <input type="password" name="password2" id="{{ form.password2.id_for_label }}" class="form-input {% if form.password2.errors %}has-error{% endif %}" placeholder="Repeat your password" />
+              <svg class="icon-left" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0110 0v4" />
+              </svg>
+
+              <button type="button" class="eye-btn" data-target="{{ form.password2.id_for_label }}">
+                <svg class="eye-show" viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg class="eye-hide" viewBox="0 0 24 24" style="display:none">
+                  <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+                  <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              </button>
+            </div>
+            {% if form.password2.errors %}
+              <ul class="field-errors">
+                {% for e in form.password2.errors %}
+                  <li>{{ e }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn-submit">Create Account →</button>
         </form>
+      </div>
 
-        <p class="text-center mt-3">
-            Already have an account?
-            <a href="{% url 'login' %}">Login</a>
-        </p>
-
+      <p class="footer-link">
+        Already have an account? <a href="{% url 'login' %}">Sign in</a>
+      </p>
     </div>
+  </div>
 
-</div>
-
+  {% comment %} <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script> {% endcomment %}
+  {% block extra_js %}
+    <script src="{% static 'js/signup.js' %}"></script>
+  {% endblock %}
 {% endblock %}
